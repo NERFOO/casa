@@ -7,7 +7,7 @@ export default class Personajes extends Component {
 
     state = {
         status : false ,
-        personaje : []
+        personajes : []
     }
 
     cargarPersonaje = () => {
@@ -18,7 +18,7 @@ export default class Personajes extends Component {
         axios.get(url).then( res => {
             this.setState({
                 status : true ,
-                personaje : res.data
+                personajes : res.data
             })
         })
     }
@@ -41,7 +41,7 @@ export default class Personajes extends Component {
                 </thead>
                 <tbody>
                     {
-                        this.state.personaje.map((pers, index) => {
+                        this.state.personajes.map((pers, index) => {
                             return(<tr key={index}>
                                 <td><img src={pers.imagen} alt="img" style={{width:"100px"}} /></td>
                                 <td>{pers.nombre}</td>

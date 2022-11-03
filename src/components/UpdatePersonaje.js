@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Global from '../Global';
 import axios from 'axios';
-import { NavLink } from 'react-router-dom';
+import { Navigate, NavLink } from 'react-router-dom';
 
 export default class UpdatePersonaje extends Component {
 
@@ -13,7 +13,8 @@ export default class UpdatePersonaje extends Component {
         statusSeries : false ,
         statusPersonajes : false ,
         series : [] ,
-        personajes : []
+        personajes : [] ,
+        idSerieNew : 0
     }
 
     cargarSeries = () => {
@@ -63,7 +64,8 @@ export default class UpdatePersonaje extends Component {
 
         axios.put(url, datos).then(res => {
             this.setState({
-                statusPut : true
+                statusPut : true ,
+                idSerieNew : idSerie
             })
         })
 
@@ -89,36 +91,38 @@ export default class UpdatePersonaje extends Component {
     }
 
     render() {
-        return (<div>
-
-            <h1>Personajes y series</h1>
-
-                <form>
-                    <label>Seleccione una serie</label><br />
-                    <select ref={this.serie} className='form-select'>
-                        {
-                            this.state.series.map((serie, index) => {
-                                return(<option key={index} value={serie.idSerie}>{serie.nombre}</option>)
-                            })
-                        }
-                    </select>
-                    <br />
-                    <label>Seleccione un personaje</label><br />
-                    <select ref={this.personaje} className='form-select'>
-                        {
-                            this.state.personajes.map((pers, index) => {
-                                return(<option key={index+100} value={pers.idPersonaje}>{pers.nombre}</option>)
-                            })
-                        }
-                    </select>
+        if(this.state.statusPut == true) {
+            return(<Navigate to={`/personajes/${this.state.idSerieNew}`} />)
+        } else {
+            return (<div>
+                <h1>Personajes y series</h1>
+                    <form>
+                        <label>Seleccione una serie</label><br />
+                        <select ref={this.serie} className='form-select'>
+                            {
+                                this.state.series.map((serie, index) => {
+                                    return(<option key={index} value={serie.idSerie}>{serie.nombre}</option>)
+                                })
+                            }
+                        </select>
                         <br />
-                    <button onClick={this.updatePersonaje} className="btn btn-info">Guardar cambios</button>
-                </form>
+                        <label>Seleccione un personaje</label><br />
+                        <select ref={this.personaje} className='form-select'>
+                            {
+                                this.state.personajes.map((pers, index) => {
+                                    return(<option key={index+100} value={pers.idPersonaje}>{pers.nombre}</option>)
+                                })
+                            }
+                        </select>
+                            <br />
+                        <button onClick={this.updatePersonaje} className="btn btn-info">Guardar cambios</button>
+                    </form>
 
-                <h2>{this.state.serie.nombre}</h2>
-                <img src={this.state.serie.imagen} style={{width:"100%"}} />
-                <h2>{this.state.personaje.nombre}</h2>
-                <img src={this.state.personaje.imagen} style={{width:"100%"}} />
-        </div>)
+                    <h2>{this.state.serie.nombre}</h2>
+                    <img src={this.state.serie.imagen} style={{width:"100%"}} />
+                    <h2>{this.state.personaje.nombre}</h2>
+                    <img src={this.state.personaje.imagen} style={{width:"100%"}} />
+            </div>)
+        }
     }
 }

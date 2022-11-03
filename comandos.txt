@@ -1,0 +1,5 @@
+npx create-react-app reactexamenjquery
+npm install --save axios
+npm install --save react-router-dom
+npm install --save bootstrap
+
